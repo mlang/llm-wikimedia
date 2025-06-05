@@ -1,0 +1,15 @@
+[project]
+name = "llm-tools-wikipedia"
+version = "0.1"
+description = "A tool plugin for LLM to enable fetching of Wikipedia articles"
+license = "MIT"
+authors = [
+    { name = "Mario Lang", email = "mlang@blind.guru" }
+]
+dependencies = [
+    "llm>=0.26",
+    "httpx>=0.23",
+]
+
+[project.entry-points.llm]
+wikipedia = "wikipedia"
