@@ -1,0 +1,14 @@
+[project]
+name = "llm-wikimedia"
+version = "0.1"
+description = "A plugin for LLM to enable fetching of Wikimedia articles"
+readme = "README.md"
+authors = [{ name = "Mario Lang", email = "mlang@blind.guru" }]
+license = {text = "Apache-2.0"}
+dependencies = [ "llm>=0.26", "httpx>=0.23" ]
+
+[project.urls]
+Homepage = "https://github.com/mlang/llm-wikimedia"
+
+[project.entry-points.llm]
+llm_wikimedia = "llm_wikimedia"
