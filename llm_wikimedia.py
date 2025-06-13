@@ -6,15 +6,16 @@ from xml.etree import ElementTree
 
 
 Lang = Literal['de', 'en', 'es', 'fr', 'it', 'nl', 'no', 'pt', 'ro']
+Site = Literal['wikipedia', 'wiktionary']
 
 export = '{http://www.mediawiki.org/xml/export-0.11/}'
 
-async def wikipedia(page: str, lang: Lang = "en"):
-    """Fetch a wikipedia article (in Wikimedia format) by page name."""
+def wikimedia(page: str, lang: Lang = "en", site: Site = "wikipedia"):
+    """Fetch a wikimedia article (in Wikimedia format)."""
 
-    async with httpx.AsyncClient() as client:
-        response = await client.get(
-            f"https://{lang}.wikipedia.org/w/index.php",
+    with httpx.Client() as client:
+        response = client.get(
+            f"https://{lang}.{site}.org/w/index.php",
             params={'title': 'Special:Export', 'pages': page},
             follow_redirects=True
         )
@@ -31,4 +32,9 @@ async def wikipedia(page: str, lang: Lang = "en"):
 
 @llm.hookimpl
 def register_tools(register):
-    register(wikipedia)
+    register(wikimedia)
+
+@llm.hookimpl
+def register_fragment_loaders(register):
+    register("wikipedia", lambda article: llm.Fragment(wikimedia(article, "en", "wikipedia")))
+    register("wiktionary", lambda article: llm.Fragment(wikimedia(article, "en", "wiktionary")))
